@@ -1,0 +1,32 @@
+<ion-view view-title="Tomar foto">
+  <ion-content>
+
+    <div class="row row-top">
+      <div class="col"></div>
+    </div>
+
+    <div class="row row-center">
+      <div class="col">
+        <img ng-src="img/no-photo.gif" ng-show="imgUri === undefined" class="center"/>
+        <img ng-src="{{imgUri}}" ng-show="imgUri !== undefined" class="center"/>
+      </div>
+    </div>
+
+
+    <!--div class="row row-bottom">
+      <button class="button button-block button-positive">
+        Enviar datos
+      </button>
+      <button class="button button-block button-positive">
+        Toma otra foto
+      </button>
+    </div-->
+
+    <div class="row row-bottom button-bar">
+      <a class="button button-dark" ng-click="sendPhoto()">Enviar datos</a>
+      <a class="button" ng-click="takePicture()" ng-show="imgUri === undefined">Tomar foto</a>
+      <a class="button" ng-click="takePicture()" ng-show="imgUri !== undefined">Toma otra foto</a>
+    </div>
+
+  </ion-content>
+</ion-view>
