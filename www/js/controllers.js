@@ -15,7 +15,7 @@ angular.module('starter.controllers', [])
   .controller('ChatsCtrl', function ($scope, $cordovaCamera, $cordovaFileTransfer, $ionicLoading, $ionicPopup, $state) {
     $scope.takePicture = function () {
       var options = {
-        quality: 10,
+        quality: 80,
         destinationType: Camera.DestinationType.DATA_URL,
         sourceType: Camera.PictureSourceType.CAMERA,
         allowEdit: true,
