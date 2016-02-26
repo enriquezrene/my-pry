@@ -21,21 +21,6 @@ angular.module('starter.controllers', [])
       maximumAge: 0
     };
 
-    $scope.rene = function () {
-      alert(9);
-      $cordovaGeolocation.getCurrentPosition(posOptions).then(function (position) {
-        var lat = position.coords.latitude;
-        var long = position.coords.longitude;
-
-        alert(lat);
-        alert(long);
-
-      }, function (err) {
-        console.log(err);
-      });
-    };
-
-
     $scope.takePicture = function () {
       var options = {
         quality: 80,
