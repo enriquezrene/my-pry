@@ -2,6 +2,10 @@ angular.module('starter.controllers', [])
 
   .controller('LoginController', function ($scope, $state) {
 
+    $scope.signUp = function(){
+      $state.go('sign-up');
+    }
+
     $scope.login = function (user) {
       console.log('Login', user)
       $state.go('tab.home');
@@ -93,8 +97,15 @@ angular.module('starter.controllers', [])
     $scope.chat = Chats.get($stateParams.chatId);
   })
 
-  .controller('AccountCtrl', function ($scope) {
-    $scope.settings = {
-      enableFriends: true
+  .controller('SignUpController', function ($scope, $state) {
+    $scope.registerUser = function (user) {
+      console.log('Login', user)
+      $state.go('tab.home');
     };
+
+
+  })
+
+  .controller('AccountCtrl', function ($scope, $state) {
+
   });
