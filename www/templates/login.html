@@ -7,6 +7,9 @@
     </div>
 
     <div class="list">
+      <p class="text-center" ng-show="login.error === true" >
+        Credenciales incorrectas, intente de nuevo
+      </p>
       <label class="item item-input">
         <input type="text" ng-model="user.email" placeholder="Correo electr&oacute;nico">
       </label>
