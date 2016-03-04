@@ -5,9 +5,29 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova'])
+angular.module('starter', ['ionic', 'ngMockE2E', 'starter.controllers', 'starter.services', 'ngCordova'])
 
-  .run(function ($ionicPlatform) {
+  .run(function ($ionicPlatform, $httpBackend, $http) {
+
+
+    var authorized = false;
+    var customers = [{name: 'John Smith'}, {name: 'Tim Johnson'}];
+
+    // returns the current list of customers or a 401 depending on authorization flag
+    $httpBackend.whenGET('https://customers').respond(function (method, url, data, headers) {
+      return authorized ? [200, customers] : [401];
+    });
+    $httpBackend.whenPOST('https://login').respond(function(method, url, data) {
+      authorized = true;
+      return  [200 , { authorizationToken: "NjMwNjM4OTQtMjE0Mi00ZWYzLWEzMDQtYWYyMjkyMzNiOGIy" } ];
+    });
+    $httpBackend.whenPOST('https://logout').respond(function(method, url, data) {
+      authorized = false;
+      return [200];
+    });
+    // All other http requests will pass through
+    $httpBackend.whenGET(/.*/).passThrough();
+
     $ionicPlatform.ready(function () {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -52,7 +72,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       .state('tab', {
         url: '/tab',
         abstract: true,
-        templateUrl: 'templates/tabs.html'
+        templateUrl: 'templates/tabs.html',
+        controller:'TabsCtrl'
       })
 
       .state('tab.home', {

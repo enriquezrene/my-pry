@@ -1,9 +1,40 @@
-angular.module('starter.services', [])
+angular.module('starter.services', ['http-auth-interceptor'])
 
-  .service('LoginService', function () {
-    this.login = function (user) {
-      return user != null && user.email == user.password;
-    }
+
+  .factory('LoginService', function ($rootScope, $state, $http, authService, $httpBackend) {
+    var service = {
+      login: function (user) {
+        $http.post('https://login', {user: user}, {ignoreAuthModule: true})
+          .success(function (data, status, headers, config) {
+            $http.defaults.headers.common.Authorization = data.authorizationToken;
+            // TODO: guardar en local storage
+            authService.loginConfirmed(data, function (config) {
+              config.headers.Authorization = data.authorizationToken;
+              return config;
+            });
+          })
+          .error(function (data, status, headers, config) {
+            $rootScope.$broadcast('event:auth-login-failed', status);
+          });
+      },
+      logout: function (user) {
+        $http.post('https://logout', {}, {ignoreAuthModule: true})
+          .finally(function (data) {
+            delete $http.defaults.headers.common.Authorization;
+            $rootScope.$broadcast('event:auth-logout-complete');
+          });
+      },
+
+      createUser: function (user) {
+        console.log(user.name);
+        console.log(user.email);
+        console.log(user.password);
+        if (user.name == "a") {
+          throw ('Algo paso aqui');
+        }
+      }
+    };
+    return service;
   })
 
   .service('GeoLocationService', function ($cordovaGeolocation) {
