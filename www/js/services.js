@@ -1,13 +1,13 @@
-angular.module('starter.services', ['http-auth-interceptor'])
+angular.module('starter.services', ['http-auth-interceptor', 'ngStorage'])
 
 
-  .factory('LoginService', function ($rootScope, $state, $http, authService, $httpBackend) {
+  .factory('LoginService', function ($rootScope, $state, $http, authService, $httpBackend, $localStorage) {
     var service = {
       login: function (user) {
         $http.post('https://login', {user: user}, {ignoreAuthModule: true})
           .success(function (data, status, headers, config) {
             $http.defaults.headers.common.Authorization = data.authorizationToken;
-            // TODO: guardar en local storage
+            $localStorage['token'] = data.authorizationToken;
             authService.loginConfirmed(data, function (config) {
               config.headers.Authorization = data.authorizationToken;
               return config;
@@ -26,9 +26,6 @@ angular.module('starter.services', ['http-auth-interceptor'])
       },
 
       createUser: function (user) {
-        console.log(user.name);
-        console.log(user.email);
-        console.log(user.password);
         if (user.name == "a") {
           throw ('Algo paso aqui');
         }
@@ -108,21 +105,6 @@ angular.module('starter.services', ['http-auth-interceptor'])
       name: 'Max Lynx',
       lastText: 'Hey, it\'s me',
       face: 'img/max.png'
-    }, {
-      id: 2,
-      name: 'Adam Bradleyson',
-      lastText: 'I should buy a boat',
-      face: 'img/adam.jpg'
-    }, {
-      id: 3,
-      name: 'Perry Governor',
-      lastText: 'Look at my mukluks!',
-      face: 'img/perry.png'
-    }, {
-      id: 4,
-      name: 'Mike Harrington',
-      lastText: 'This is wicked good ice cream.',
-      face: 'img/mike.png'
     }];
 
     return {
