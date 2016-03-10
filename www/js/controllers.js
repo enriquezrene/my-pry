@@ -70,16 +70,21 @@ angular.module('starter.controllers', [])
 
       $scope.sendPhoto = function () {
         var optionsUp = PictureService.getUploadOptions();
-        //alert('sending picture');
-        $cordovaFileTransfer.upload("https://demoodra.herokuapp.com/uploadImage?lat=" + $scope.currentPosition.lat + "&long=" + $scope.currentPosition.long, $scope.imgUri, optionsUp)
+        alert('sending picture');
+        params = new Object();
+        params.headers = {Basic: 'cmVuZTplbnJpcXVleg=='};
+        optionsUp.params = params;
+
+        $cordovaFileTransfer.upload("http://diyboot-moe.rhcloud.com/uploadImage?lat=" + $scope.currentPosition.lat + "&long=" + $scope.currentPosition.long, $scope.imgUri, optionsUp)
           .then(function (result) {
+            alert('sending picture.');
             $ionicLoading.hide();
             var alertPopup = $ionicPopup.alert({
               title: 'Aviso',
               template: 'Los datos han sido enviados exitosamente',
               okType: 'button-dark'
             });
-
+            alert('sending picture..');
             alertPopup.then(function (res) {
               $state.go('tab.home');
             });
@@ -87,7 +92,8 @@ angular.module('starter.controllers', [])
           }, function (err) {
             alert('Error: ' + JSON.stringify(err))
           }, function (progress) {
-            //$ionicLoading.show();
+            alert('sending picture...');
+            $ionicLoading.show();
           });
       }
 
