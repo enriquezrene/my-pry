@@ -83,9 +83,37 @@ angular.module('starter.controllers', [])
     };
 
 
+    //$scope.sendPhoto = function () {
+    //  //$ionicLoading.show();
+    //  PictureService.takePicture($scope.currentPosition.lat, $scope.currentPosition.long, $scope.imgUri).then(function (data) {
+    //    //  $ionicLoading.hide();
+    //      var alertPopup = $ionicPopup.alert({
+    //        title: 'Aviso',
+    //        template: 'Los datos han sido enviados exitosamente',
+    //        okType: 'button-dark'
+    //      });
+    //      alertPopup.then(function (res) {
+    //        $state.go('tab.home');
+    //      });
+    //    })
+    //    .catch(function (error) {
+    //      //$ionicLoading.hide();
+    //      $ionicPopup.alert({
+    //        title: 'Error',
+    //        template: 'Ocurrio un error al enviar los datos, intente mas tarde',
+    //        okType: 'button-dark'
+    //      });
+    //    });
+
+
     $scope.sendPhoto = function () {
-      $ionicLoading.show();
-      PictureService.takePicture($scope.currentPosition.lat, $scope.currentPosition.long, $scope.imgUri).then(function (data) {
+      var optionsUp = PictureService.getUploadOptions();
+      params = new Object();
+      params.headers = {Basic: 'cmVuZTplbnJpcXVleg=='};
+      optionsUp.params = params;
+
+      $cordovaFileTransfer.upload("https://demoodra.herokuapp.com/odra/uploadImage?lat=" + $scope.currentPosition.lat + "&long=" + $scope.currentPosition.long, $scope.imgUri, optionsUp)
+        .then(function (result) {
           $ionicLoading.hide();
           var alertPopup = $ionicPopup.alert({
             title: 'Aviso',
@@ -95,44 +123,13 @@ angular.module('starter.controllers', [])
           alertPopup.then(function (res) {
             $state.go('tab.home');
           });
-        })
-        .catch(function (error) {
-          $ionicLoading.hide();
-          $ionicPopup.alert({
-            title: 'Error',
-            template: 'Ocurrio un error al enviar los datos, intente mas tarde',
-            okType: 'button-dark'
-          });
+
+        }, function (err) {
+          alert('Error: ' + JSON.stringify(err))
+        }, function (progress) {
+          alert('sending picture...');
+          $ionicLoading.show();
         });
-
-
-      //$scope.sendPhoto = function () {
-      //  var optionsUp = PictureService.getUploadOptions();
-      //  alert('sending picture');
-      //  params = new Object();
-      //  params.headers = {Basic: 'cmVuZTplbnJpcXVleg=='};
-      //  optionsUp.params = params;
-      //
-      //  $cordovaFileTransfer.upload("http://diyboot-moe.rhcloud.com/uploadImage?lat=" + $scope.currentPosition.lat + "&long=" + $scope.currentPosition.long, $scope.imgUri, optionsUp)
-      //    .then(function (result) {
-      //      alert('sending picture.');
-      //      $ionicLoading.hide();
-      //      var alertPopup = $ionicPopup.alert({
-      //        title: 'Aviso',
-      //        template: 'Los datos han sido enviados exitosamente',
-      //        okType: 'button-dark'
-      //      });
-      //      alert('sending picture..');
-      //      alertPopup.then(function (res) {
-      //        $state.go('tab.home');
-      //      });
-      //
-      //    }, function (err) {
-      //      alert('Error: ' + JSON.stringify(err))
-      //    }, function (progress) {
-      //      alert('sending picture...');
-      //      $ionicLoading.show();
-      //    });
     };
 
 

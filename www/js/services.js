@@ -6,7 +6,7 @@ angular.module('starter.services', ['http-auth-interceptor', 'ngStorage'])
       login: function (user) {
         var defered = $q.defer();
         var promise = defered.promise;
-        $http.post('http://localhost:8080/odra/login', user, {
+        $http.post('https://demoodra.herokuapp.com/odra/login', user, {
             headers: {
               'Content-Type': 'application/json'
             }
@@ -28,7 +28,7 @@ angular.module('starter.services', ['http-auth-interceptor', 'ngStorage'])
       createUser: function (user) {
         var defered = $q.defer();
         var promise = defered.promise;
-        $http.post('http://localhost:8080/odra/signup', user, {
+        $http.post('https://demoodra.herokuapp.com/odra/signup', user, {
             headers: {
               'Content-Type': 'application/json'
             }
@@ -103,8 +103,12 @@ angular.module('starter.services', ['http-auth-interceptor', 'ngStorage'])
       },
 
       takePicture: function (lat, long, picture) {
-        $cordovaFileTransfer.upload("http://localhost:8080/odra/upload?lat=" + lat + "&long=" + long, picture, optionsFileUpload)
+        alert(lat);
+        alert(long);
+        alert(picture);
+        $cordovaFileTransfer.upload("https://demoodra.herokuapp.com/odra/uploadImage?lat=" + lat + "&long=" + long, picture, optionsFileUpload)
           .then(function (result) {
+            alert(99);
             defered.resolve(result);
             //$ionicLoading.hide();
             //var alertPopup = $ionicPopup.alert({
@@ -118,8 +122,11 @@ angular.module('starter.services', ['http-auth-interceptor', 'ngStorage'])
             //});
 
           }, function (err) {
+            alert(101);
             defered.reject(err);
             //alert('Error: ' + JSON.stringify(err))
+          }, function (progress) {
+            alert('sending picture...');
           });
         return promise;
         //  , function (progress) {
