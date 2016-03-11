@@ -12,15 +12,19 @@ angular.module('starter.controllers', [])
 
     $scope.signUp = function () {
       $state.go('sign-up');
-    }
+    };
 
     $scope.login = function () {
-      try {
-        LoginService.login($scope.user);
-        //$state.go('tab.home');
-      } catch (e) {
-        $scope.message = 'No me puedo logear';
-      }
+      LoginService.login($scope.user).then(function (data) {
+        $state.go('tab.home');
+        $scope.message = '';
+      }).catch(function (error) {
+        $scope.message = 'Credenciales incorrectas';
+        $scope.user = {
+          email: null,
+          password: null
+        };
+      })
     };
 
     $scope.$on('event:auth-loginRequired', function (e, rejection) {
@@ -47,64 +51,91 @@ angular.module('starter.controllers', [])
 
   })
 
-  .controller('DashCtrl', function ($scope, $http, LoginService) {
+  .controller('DashCtrl', function ($state, $scope, $http, LoginService) {
+
 
   })
 
-  .controller('ChatsCtrl', function (PictureService, GeoLocationService, $ionicPlatform, $scope, $cordovaCamera, $cordovaFileTransfer, $ionicLoading, $ionicPopup, $state, $cordovaGeolocation) {
+  .controller('ChatsCtrl', function (PictureService, GeoLocationService, $ionicPlatform, $scope, $cordovaCamera, $cordovaFileTransfer, $ionicLoading, $ionicPopup, $state) {
 
     $scope.findGeolocation = function () {
       GeoLocationService.getCurrentLocation().then(function (currentLocation) {
         $scope.currentPosition = currentLocation;
       });
-    }
+    };
 
     $ionicPlatform.ready(function () {
       $scope.findGeolocation();
-    })
+    });
 
+    var options = PictureService.getCameraOptions();
 
     $scope.takePicture = function () {
-
-      var options = PictureService.getCameraOptions();
-
-      $scope.sendPhoto = function () {
-        var optionsUp = PictureService.getUploadOptions();
-        alert('sending picture');
-        params = new Object();
-        params.headers = {Basic: 'cmVuZTplbnJpcXVleg=='};
-        optionsUp.params = params;
-
-        $cordovaFileTransfer.upload("http://diyboot-moe.rhcloud.com/uploadImage?lat=" + $scope.currentPosition.lat + "&long=" + $scope.currentPosition.long, $scope.imgUri, optionsUp)
-          .then(function (result) {
-            alert('sending picture.');
-            $ionicLoading.hide();
-            var alertPopup = $ionicPopup.alert({
-              title: 'Aviso',
-              template: 'Los datos han sido enviados exitosamente',
-              okType: 'button-dark'
-            });
-            alert('sending picture..');
-            alertPopup.then(function (res) {
-              $state.go('tab.home');
-            });
-
-          }, function (err) {
-            alert('Error: ' + JSON.stringify(err))
-          }, function (progress) {
-            alert('sending picture...');
-            $ionicLoading.show();
-          });
-      }
-
-
       $cordovaCamera.getPicture(options).then(function (imageData) {
         $scope.imgUri = "data:image/jpeg;base64," + imageData;
       }, function (err) {
-        console.log(err);
+        $ionicPopup.alert({
+          title: 'Error',
+          template: 'Ocurrio un error al usar la camara',
+          okType: 'button-dark'
+        });
       });
+    };
 
-    }
+
+    $scope.sendPhoto = function () {
+      $ionicLoading.show();
+      PictureService.takePicture($scope.currentPosition.lat, $scope.currentPosition.long, $scope.imgUri).then(function (data) {
+          $ionicLoading.hide();
+          var alertPopup = $ionicPopup.alert({
+            title: 'Aviso',
+            template: 'Los datos han sido enviados exitosamente',
+            okType: 'button-dark'
+          });
+          alertPopup.then(function (res) {
+            $state.go('tab.home');
+          });
+        })
+        .catch(function (error) {
+          $ionicLoading.hide();
+          $ionicPopup.alert({
+            title: 'Error',
+            template: 'Ocurrio un error al enviar los datos, intente mas tarde',
+            okType: 'button-dark'
+          });
+        });
+
+
+      //$scope.sendPhoto = function () {
+      //  var optionsUp = PictureService.getUploadOptions();
+      //  alert('sending picture');
+      //  params = new Object();
+      //  params.headers = {Basic: 'cmVuZTplbnJpcXVleg=='};
+      //  optionsUp.params = params;
+      //
+      //  $cordovaFileTransfer.upload("http://diyboot-moe.rhcloud.com/uploadImage?lat=" + $scope.currentPosition.lat + "&long=" + $scope.currentPosition.long, $scope.imgUri, optionsUp)
+      //    .then(function (result) {
+      //      alert('sending picture.');
+      //      $ionicLoading.hide();
+      //      var alertPopup = $ionicPopup.alert({
+      //        title: 'Aviso',
+      //        template: 'Los datos han sido enviados exitosamente',
+      //        okType: 'button-dark'
+      //      });
+      //      alert('sending picture..');
+      //      alertPopup.then(function (res) {
+      //        $state.go('tab.home');
+      //      });
+      //
+      //    }, function (err) {
+      //      alert('Error: ' + JSON.stringify(err))
+      //    }, function (progress) {
+      //      alert('sending picture...');
+      //      $ionicLoading.show();
+      //    });
+    };
+
+
   })
 
   .controller('ChatDetailCtrl', function ($scope, $stateParams, Chats) {
@@ -122,13 +153,18 @@ angular.module('starter.controllers', [])
     };
 
     $scope.registerUser = function () {
-      try {
-        LoginService.createUser($scope.user);
+      LoginService.createUser($scope.user).then(function (data) {
+        $scope.message = '';
         $state.go('tab.home');
-      } catch (e) {
-        console.log(e)
-      }
-    };
+      }).catch(function (error) {
+        $scope.message = 'Ocurrio un error al crear el usuario: ';
+        $scope.user = {
+          email: null,
+          password: null,
+          name: null
+        };
+      })
+    }
 
   })
 
