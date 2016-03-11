@@ -74,11 +74,15 @@ angular.module('starter.services', ['http-auth-interceptor', 'ngStorage'])
     var promise = defered.promise;
 
     var optionsFileUpload = {
-      fileKey: "key",
-      fileName: "image.jpeg",
-      chunkedMode: "false",
-      mimeType: "image/jpeg"
-    };
+        fileKey: "key",
+        fileName: "image.jpeg",
+        chunkedMode: "false",
+        mimeType: "image/jpeg",
+        headers: {
+          Connection: "close"
+        }
+      }
+      ;
 
     var options = {
       quality: 80,

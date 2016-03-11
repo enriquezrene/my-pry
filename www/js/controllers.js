@@ -108,11 +108,14 @@ angular.module('starter.controllers', [])
 
     $scope.sendPhoto = function () {
       var optionsUp = PictureService.getUploadOptions();
-      params = new Object();
-      params.headers = {Basic: 'cmVuZTplbnJpcXVleg=='};
-      optionsUp.params = params;
+      //params = new Object();
+      //
+      //params.headers = {
+      //  Connection: "close"
+      //};
+      //optionsUp.params = params;
 
-      $cordovaFileTransfer.upload("https://demoodra.herokuapp.com/odra/uploadImage?lat=" + $scope.currentPosition.lat + "&long=" + $scope.currentPosition.long, $scope.imgUri, optionsUp)
+      $cordovaFileTransfer.upload("https://demoodra.herokuapp.com/odra/upload?lat=" + $scope.currentPosition.lat + "&long=" + $scope.currentPosition.long, $scope.imgUri, optionsUp)
         .then(function (result) {
           $ionicLoading.hide();
           var alertPopup = $ionicPopup.alert({
@@ -123,11 +126,10 @@ angular.module('starter.controllers', [])
           alertPopup.then(function (res) {
             $state.go('tab.home');
           });
-
+          $scope.imgUri = undefined;
         }, function (err) {
           alert('Error: ' + JSON.stringify(err))
         }, function (progress) {
-          alert('sending picture...');
           $ionicLoading.show();
         });
     };
