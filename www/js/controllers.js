@@ -17,7 +17,7 @@ angular.module('starter.controllers', [])
     $scope.login = function () {
       try {
         LoginService.login($scope.user);
-        $state.go('tab.home');
+        //$state.go('tab.home');
       } catch (e) {
         $scope.message = 'No me puedo logear';
       }
