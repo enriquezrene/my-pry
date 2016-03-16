@@ -1,32 +1,20 @@
 <ion-view view-title="Tomar foto">
   <ion-content>
-
-    <div class="row row-top">
-      <div class="col"></div>
+    <div class="row">
+      <div class="col">
+        <button class="button button-calm button-full" ng-click="getPicture()">Show Camera</button>
+      </div>
+      <div class="col">
+        <button class="button button-calm button-full" ng-click="getPicture()">Show Album</button>
+      </div>
     </div>
 
     <div class="row row-center">
       <div class="col">
-        <img ng-src="img/logo.png" ng-show="imgUri === undefined" class="center"/>
-        <img ng-src="{{imgUri}}" ng-show="imgUri !== undefined" class="center"/>
+        <img ng-src="img/logo.png" ng-show="item.data.length == 0" class="center"/>
+        <img ng-src="{{ item.data }}" ng-show="item.data !== undefined" class="center"/>
       </div>
     </div>
-
-
-    <!--div class="row row-bottom">
-      <button class="button button-block button-positive">
-        Enviar datos
-      </button>
-      <button class="button button-block button-positive">
-        Toma otra foto
-      </button>
-    </div-->
-
-    <div class="row row-bottom button-bar">
-      <a class="button button-dark" ng-show="imgUri !== undefined" ng-click="sendPhoto()">Enviar datos</a>
-      <a class="button button-dark" ng-click="takePicture()" ng-show="imgUri === undefined">Tomar foto</a>
-      <a class="button button-energized" ng-click="takePicture()" ng-show="imgUri !== undefined">Toma otra foto</a>
-    </div>
-
   </ion-content>
+
 </ion-view>
