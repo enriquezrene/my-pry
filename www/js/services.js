@@ -28,7 +28,21 @@ angular.module('starter.services', ['ngStorage'])
       },
 
       createUser: function (user) {
-
+        var deferred = $q.defer();
+        var promise = deferred.promise;
+        $http.post('https://demoodra.herokuapp.com/odra/signup', user, {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+          .success(function (data) {
+            $localStorage['token'] = data;
+            deferred.resolve(data);
+          })
+          .error(function (error) {
+            deferred.reject(error);
+          });
+        return promise;
       }
     }
 

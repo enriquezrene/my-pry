@@ -28,6 +28,30 @@ angular.module('starter.controllers', [])
 
   })
 
+  .controller('SignUpController', function ($scope, $state, LoginService) {
+
+    clearForm();
+
+    $scope.registerUser = function () {
+      LoginService.createUser($scope.user).then(function (data) {
+        clearForm();
+        $state.go('tab.home');
+      }).catch(function (error) {
+        clearForm();
+        $scope.message = 'Ocurrio un error al crear el usuario: ';
+      })
+    };
+
+    function clearForm() {
+      $scope.user = {
+        email: null,
+        password: null,
+        name: null
+      };
+    }
+
+  })
+
   .controller('DashCtrl', function ($scope, $http, LoginService) {
 
   })
@@ -90,27 +114,6 @@ angular.module('starter.controllers', [])
 
   .controller('ChatDetailCtrl', function ($scope, $stateParams, Chats) {
     $scope.chat = Chats.get($stateParams.chatId);
-  })
-
-  .controller('SignUpController', function ($scope, $state, LoginService) {
-
-    $scope.message = "";
-
-    $scope.user = {
-      email: null,
-      password: null,
-      name: null
-    };
-
-    $scope.registerUser = function () {
-      try {
-        LoginService.createUser($scope.user);
-        $state.go('tab.home');
-      } catch (e) {
-        console.log(e)
-      }
-    };
-
   })
 
   .controller('TabsCtrl', function ($scope, $state, LoginService) {

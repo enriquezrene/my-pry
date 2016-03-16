@@ -37,7 +37,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     // Each state's controller can be found in controllers.js
     $stateProvider
 
-    // Each tab has its own nav history stack:
+    
       .state('login', {
         url: '/login',
         templateUrl: 'templates/login.html',
