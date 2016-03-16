@@ -1,18 +1,31 @@
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova'])
 
-  .run(function ($ionicPlatform, $httpBackend, $http) {
+  .run(function ($ionicPlatform, $httpBackend, $http, $ionicPopup) {
 
     $ionicPlatform.ready(function () {
       if (window.cordova && window.cordova.plugins && window.cordova.plugins.Keyboard) {
         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
         cordova.plugins.Keyboard.disableScroll(true);
-
       }
       if (window.StatusBar) {
         StatusBar.styleDefault();
       }
+      // Check for network connection
+      if (window.Connection) {
+        if (navigator.connection.type == Connection.NONE) {
+          $ionicPopup.alert({
+              title: 'No hay internet',
+              template: 'Lo sentimos, la conectividad ha internet se ha perdido. Por favor reconectese y pruebe nuevamente.',
+              okType: 'button-dark'
+            })
+            .then(function (result) {
+              ionic.Platform.exitApp();
+            });
+        }
+      }
     });
   })
+
 
   .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
