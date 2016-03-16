@@ -2,48 +2,29 @@ angular.module('starter.controllers', [])
 
   .controller('LoginController', function ($scope, $http, $state, $ionicModal, LoginService) {
 
-    $scope.message = "";
+    clearForm();
 
-    $scope.user = {
-      email: null,
-      password: null,
-      name: null
-    };
-
-    $scope.signUp = function () {
+    $scope.showSignUpForm = function () {
       $state.go('sign-up');
-    }
+    };
 
     $scope.login = function () {
-      try {
-        LoginService.login($scope.user);
+      LoginService.login($scope.user).then(function (data) {
         $state.go('tab.home');
-      } catch (e) {
-        $scope.message = 'No me puedo logear';
-      }
+        clearForm();
+      }).catch(function (error) {
+        clearForm();
+        $scope.message = 'Credenciales incorrectas';
+      })
     };
 
-    $scope.$on('event:auth-loginRequired', function (e, rejection) {
-      $state.go('login');
-    });
-
-    $scope.$on('event:auth-loginConfirmed', function () {
-      $scope.email = null;
-      $scope.password = null;
-      $state.go('tab.home');
-    });
-
-    $scope.$on('event:auth-login-failed', function (e, status) {
-      var error = "Login fallido";
-      if (status == 401) {
-        error = "Las credenciales ingresadas son incorrectas";
-      }
-      $scope.message = error;
-    });
-
-    $scope.$on('event:auth-logout-complete', function () {
-      $state.go('app.home', {}, {reload: true, inherit: false});
-    });
+    function clearForm() {
+      $scope.user = {
+        email: null,
+        password: null,
+        name: null
+      };
+    }
 
   })
 

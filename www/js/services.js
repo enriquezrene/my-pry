@@ -1,37 +1,37 @@
-angular.module('starter.services', ['http-auth-interceptor', 'ngStorage'])
+angular.module('starter.services', ['ngStorage'])
 
 
-  .factory('LoginService', function ($rootScope, $state, $http, authService, $httpBackend, $localStorage) {
-    var service = {
+  .service('LoginService', function ($http, $localStorage, $q) {
+
+    return {
+
       login: function (user) {
-        $http.post('https://login', {user: user}, {ignoreAuthModule: true})
-          .success(function (data, status, headers, config) {
-            $http.defaults.headers.common.Authorization = data.authorizationToken;
-            $localStorage['token'] = data.authorizationToken;
-            authService.loginConfirmed(data, function (config) {
-              config.headers.Authorization = data.authorizationToken;
-              return config;
-            });
+        var deferred = $q.defer();
+        var promise = deferred.promise;
+        $http.post('https://demoodra.herokuapp.com/odra/login', user, {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+          .success(function (data) {
+            $localStorage['token'] = data;
+            deferred.resolve(data);
           })
           .error(function (data, status, headers, config) {
-            $rootScope.$broadcast('event:auth-login-failed', status);
+            deferred.reject(data);
           });
+        return promise;
       },
+
       logout: function (user) {
-        $http.post('https://logout', {}, {ignoreAuthModule: true})
-          .finally(function (data) {
-            delete $http.defaults.headers.common.Authorization;
-            $rootScope.$broadcast('event:auth-logout-complete');
-          });
+
       },
 
       createUser: function (user) {
-        if (user.name == "a") {
-          throw ('Algo paso aqui');
-        }
+
       }
-    };
-    return service;
+    }
+
   })
 
   .service('GeoLocationService', function ($cordovaGeolocation) {
