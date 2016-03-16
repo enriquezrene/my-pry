@@ -38,11 +38,11 @@ angular.module('starter.controllers', [])
       GeoLocationService.getCurrentLocation().then(function (currentLocation) {
         $scope.currentPosition = currentLocation;
       });
-    }
+    };
 
     $ionicPlatform.ready(function () {
       $scope.findGeolocation();
-    })
+    });
 
 
     $scope.takePicture = function () {
