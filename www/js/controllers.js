@@ -58,6 +58,8 @@ angular.module('starter.controllers', [])
 
   .controller('ChatsCtrl', function (PictureService, GeoLocationService, $ionicPlatform, $scope, $cordovaCamera, $cordovaFileTransfer, $ionicLoading, $ionicPopup, $state) {
 
+    $scope.imgUri = undefined;
+    
     $scope.findGeolocation = function () {
       GeoLocationService.getCurrentLocation().then(function (currentLocation) {
         $scope.currentPosition = currentLocation;
