@@ -1,20 +1,19 @@
 <ion-view view-title="Tomar foto">
-  <ion-content>
-    <div class="row">
-      <div class="col">
-        <button class="button button-calm button-full" ng-click="getPicture()">Show Camera</button>
-      </div>
-      <div class="col">
-        <button class="button button-calm button-full" ng-click="getPicture()">Show Album</button>
-      </div>
-    </div>
+    <ion-content>
 
-    <div class="row row-center">
-      <div class="col">
-        <img ng-src="img/logo.png" ng-show="item.data.length == 0" class="center"/>
-        <img ng-src="{{ item.data }}" ng-show="item.data !== undefined" class="center"/>
-      </div>
-    </div>
-  </ion-content>
+        <div class="row row-center">
+            <div class="col">
+                <img ng-src="img/logo.png" ng-show="item.data.length == 0" class="center" />
+                <img ng-src="{{ item.data }}" ng-show="item.data.length != 0" class="center" />
+            </div>
+        </div>
+
+        <div class="row row-bottom button-bar">
+            <a class="button button-dark" ng-show="item.data.length != 0" ng-click="sendInformation()">Enviar datos</a>
+            <a class="button button-dark" ng-show="item.data.length == 0" ng-click="getPicture()">Tomar foto</a>
+            <a class="button button-energized" ng-show="item.data.length != 0" ng-click="getPicture()">Tomar otra foto</a>
+        </div>
+
+    </ion-content>
 
 </ion-view>
