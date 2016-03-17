@@ -64,7 +64,6 @@ angular.module('starter.controllers', [])
     clearData();
 
     $scope.findGeolocation = function () {
-        alert('finding loc');
         GeoLocationService.getCurrentLocation()
             .then(function (currentLocation) {
                 $scope.currentPosition = currentLocation;
@@ -93,7 +92,7 @@ angular.module('starter.controllers', [])
             $scope.item.data = "data:image/jpeg;base64," + imageData;
             console.log(imageData);
         }, function (err) {
-            alert('Unable to take picture');
+            alert('No es posible usar la camara en estos momentos');
         });
     };
 

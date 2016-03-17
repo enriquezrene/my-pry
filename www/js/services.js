@@ -48,8 +48,7 @@ angular.module('starter.services', ['ngStorage'])
 
 })
 
-.service('GeoLocationService', function ($cordovaGeolocation) {
-    alert('finding loc in service');
+.service('GeoLocationService', function ($cordovaGeolocation, $ionicPopup) {
     var currentLocation = [];
     var gpsOptions = {
         enableHighAccuracy: true,
@@ -59,13 +58,19 @@ angular.module('starter.services', ['ngStorage'])
 
     return {
         getCurrentLocation: function () {
-            alert('finding...');
             return $cordovaGeolocation.getCurrentPosition(gpsOptions).then(function (position) {
-                alert(position.coords.latitude);
                 currentLocation.lat = position.coords.latitude;
-                alert(position.coords.longitude);
                 currentLocation.long = position.coords.longitude;
                 return currentLocation;
+            }, function (err) {
+                $ionicPopup.alert({
+                        title: 'Error con el GPS',
+                        template: 'Lo sentimos, no es posible usar el GPS en estos momentos. Por favor intente mas tarde.',
+                        okType: 'button-dark'
+                    })
+                    .then(function (result) {
+                        ionic.Platform.exitApp();
+                    });
             });
         }
 
