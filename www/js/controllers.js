@@ -115,8 +115,8 @@ angular.module('starter.controllers', [])
           $ionicLoading.hide();
           clearData();
           var alertPopup = $ionicPopup.alert({
-            title: 'Aviso',
-            template: 'Los datos han sido enviados exitosamente',
+            title: 'Envio exitoso',
+            template: 'Un agente encargado dar&aacute; seguimiento al caso.',
             okType: 'button-dark'
           });
           alertPopup.then(function (res) {

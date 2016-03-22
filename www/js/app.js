@@ -15,7 +15,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         if (navigator.connection.type == Connection.NONE) {
           $ionicPopup.alert({
               title: 'No hay internet',
-              template: 'Lo sentimos, la conectividad ha internet se ha perdido. Por favor reconectese y pruebe nuevamente.',
+              template: 'Lo sentimos, la conectividad ha internet se ha perdido. Por favor intente nuevamente.',
               okType: 'button-dark'
             })
             .then(function (result) {

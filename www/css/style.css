@@ -3,3 +3,9 @@
   margin-right: auto;
   display: block;
 }
+
+
+#mio {
+        background: url('../img/logo.png') no-repeat center center; 
+    	background-size: 60%;
+    }
