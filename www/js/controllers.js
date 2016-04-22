@@ -27,7 +27,8 @@ angular.module('starter.controllers', [])
       $scope.user = {
         email: null,
         password: null,
-        name: null
+        name: null,
+        mobile:null
       };
     }
 
@@ -55,7 +56,8 @@ angular.module('starter.controllers', [])
       $scope.user = {
         email: null,
         password: null,
-        name: null
+        name: null,
+        mobile:null
       };
     }
 
