@@ -8,7 +8,7 @@ angular.module('starter.services', ['ngStorage'])
       login: function (user) {
         var deferred = $q.defer();
         var promise = deferred.promise;
-        $http.post('https://demoodra.herokuapp.com/odra/login', user, {
+        /*$http.post('https://demoodra.herokuapp.com/odra/login', user, {
             headers: {
               'Content-Type': 'application/json'
             }
@@ -19,7 +19,23 @@ angular.module('starter.services', ['ngStorage'])
           })
           .error(function (data, status, headers, config) {
             deferred.reject(data);
-          });
+          });*/
+          $http({
+                    method  : 'POST',
+                    url     : 'http://50.112.14.69:8080/api/authentication',
+                    data    : user, //forms user object
+                    headers : {'Content-Type': 'application/x-www-form-urlencoded'}
+                   })
+                   .success(function (data) {
+                        $localStorage['token'] = data;
+                        console.log('ok');
+                         deferred.resolve(data);
+                   })
+                   .error(function (data, status, headers, config) {
+                   console.log('bad');
+                        deferred.reject(data);
+                   });
+
         return promise;
       },
 
