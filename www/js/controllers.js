@@ -25,10 +25,10 @@ angular.module('starter.controllers', [])
     function clearForm() {
       $scope.message = undefined;
       $scope.user = {
-        email: null,
-        password: null,
-        name: null,
-        mobile:null
+        j_username: null,
+        j_password: null,
+        //remember-me: null,
+        submit:null
       };
     }
 
