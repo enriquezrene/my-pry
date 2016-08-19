@@ -15,38 +15,35 @@ angular.module('starter.services', ['ngStorage'])
                     headers : {'Content-Type': 'application/x-www-form-urlencoded'},
                     data: $httpParamSerializer(user)
                 }).success(function (data) {
-                    console.log('OK');
-                    console.log(data);
+                    console.log('login'),
                     $localStorage['token'] = data;
                     deferred.resolve(data);
                 }).error(function (data, status, headers, config) {
-                    console.log('ERROR');
                     console.log(data);
                     console.log(status);
                     console.log(headers);
                     console.log(config);
                     deferred.reject(data);
                 });
-
-
-               /* $http.post('http://50.112.14.69:8080/api/authentication', user, {
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        'Access-Control-Allow-Origin':'*'
-                    }
-                })
-                    .success(function (data) {
-                        $localStorage['token'] = data;
-                        deferred.resolve(data);
-                    })
-                    .error(function (data, status, headers, config) {
-                        deferred.reject(data);
-                    });*/
                 return promise;
             },
 
             logout: function (user) {
-
+                /*var deferred = $q.defer();
+                var promise = deferred.promise;
+                user.submit='Login';
+                $http({
+                    method: 'POST',
+                    url: 'http://50.112.14.69:8080/api/logout'
+                }).success(function (data) {
+                    console.log('logout');
+                    $localStorage['token'] = null;
+                    deferred.resolve(data);
+                }).error(function (data, status, headers, config) {
+                    console.log('fail logout');
+                    deferred.reject(data);
+                });
+                return promise;*/
             },
 
             createUser: function (user) {

@@ -98,6 +98,18 @@ angular.module('starter.controllers', [])
       $cordovaCamera.getPicture(options).then(function (imageData) {
         $scope.item.imagePath = "Photo capture as Base64";
         $scope.item.data = "data:image/jpeg;base64," + imageData;
+        
+        $scope.item.codigo = "ADAF-789888";
+        $scope.item.estado = "Creada";
+        $scope.item.fecha = "2016-02-22T00:00:00Z";
+        $scope.item.foto = imageData;
+        $scope.item.fotoContentType = "image/jpeg";
+        $scope.item.latitud = '88';
+        $scope.item.longitud = '99';
+        $scope.item.placa = 'PCN-6666';
+        $scope.item.sancionable = null;
+
+
         console.log(imageData);
       }, function (err) {
         alert('No es posible usar la camara en estos momentos');
@@ -106,13 +118,9 @@ angular.module('starter.controllers', [])
 
     $scope.sendInformation = function () {
       var optionsUp = PictureService.getUploadOptions();
-      //        params = new Object();
-      //        params.headers = {
-      //            Basic: 'cmVuZTplbnJpcXVleg=='
-      //        };
-      //        optionsUp.params = params;
+      alert(1);
 
-      $cordovaFileTransfer.upload("https://demoodra.herokuapp.com/odra/upload?lat=" + $scope.currentPosition.lat + "&long=" + $scope.currentPosition.long, $scope.item.data, optionsUp)
+      /*$cordovaFileTransfer.upload("https://demoodra.herokuapp.com/odra/upload?lat=" + $scope.currentPosition.lat + "&long=" + $scope.currentPosition.long, $scope.item.data, optionsUp)
         .then(function (result) {
           $ionicLoading.hide();
           clearData();
@@ -129,7 +137,34 @@ angular.module('starter.controllers', [])
           alert('Error: ' + JSON.stringify(err))
         }, function (progress) {
           $ionicLoading.show();
+        });*/
+        $cordovaFileTransfer.upload("http://50.112.14.69:8080/api/denuncias", $scope.item, optionsUp)
+        .then(function (result) {
+          $ionicLoading.hide();
+          clearData();
+          var alertPopup = $ionicPopup.alert({
+            title: 'Envio exitoso',
+            template: 'Un agente encargado dar&aacute; seguimiento al caso.',
+            okType: 'button-dark'
+          });
+          alertPopup.then(function (res) {
+            $state.go('tab.home');
+          });
+
+        }, function (err) {
+          var alertPopup = $ionicPopup.alert({
+            title: 'ERROR',
+            template: JSON.stringify(err),
+            okType: 'button-dark'
+          });
+          alertPopup.then(function (res) {
+            $state.go('tab.home');
+          });
+          //alert('Error: ' + JSON.stringify(err))
+        }, function (progress) {
+          $ionicLoading.show();
         });
+        alert(2);
     };
 
     function clearData() {
