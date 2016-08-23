@@ -107,13 +107,13 @@ angular.module('starter.services', ['ngStorage'])
         };
 
         var options = {
-            quality: 80,
+            quality: 10,
             destinationType: Camera.DestinationType.DATA_URL,
             sourceType: Camera.PictureSourceType.CAMERA,
             allowEdit: true,
             encodingType: Camera.EncodingType.JPEG,
-            targetWidth: 300,
-            targetHeight: 300,
+            targetWidth: 10,
+            targetHeight: 10,
             popoverOptions: CameraPopoverOptions,
             saveToPhotoAlbum: false,
             correctOrientation: true

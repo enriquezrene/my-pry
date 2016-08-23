@@ -138,7 +138,7 @@ angular.module('starter.controllers', [])
         }, function (progress) {
           $ionicLoading.show();
         });*/
-        $cordovaFileTransfer.upload("http://50.112.14.69:8080/api/denuncias", $scope.item, optionsUp)
+       $cordovaFileTransfer.upload("http://50.112.14.69:8080/api/upload?placa=ABC1234&lat=" + $scope.currentPosition.lat + "&lon=" + $scope.currentPosition.long, $scope.item.data, optionsUp)
         .then(function (result) {
           $ionicLoading.hide();
           clearData();
@@ -152,19 +152,10 @@ angular.module('starter.controllers', [])
           });
 
         }, function (err) {
-          var alertPopup = $ionicPopup.alert({
-            title: 'ERROR',
-            template: JSON.stringify(err),
-            okType: 'button-dark'
-          });
-          alertPopup.then(function (res) {
-            $state.go('tab.home');
-          });
-          //alert('Error: ' + JSON.stringify(err))
+          alert('Error: ' + JSON.stringify(err))
         }, function (progress) {
           $ionicLoading.show();
         });
-        alert(2);
     };
 
     function clearData() {
