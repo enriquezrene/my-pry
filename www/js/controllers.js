@@ -27,7 +27,7 @@ angular.module('starter.controllers', [])
       $scope.user = {
         j_username: null,
         j_password: null,
-        //remember-me: null,
+        phone: null,
         submit:null
       };
     }
